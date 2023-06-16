@@ -11,6 +11,7 @@ function App() {
   const [yearCalc, setYearCalc] = useState("- -");
   const [error, setError] = useState(false)
 
+
   function ageCalc() {
     let today = new Date();
     let year = today.getFullYear();
@@ -19,8 +20,6 @@ function App() {
     let monthDays = new Date(userYear, userMonth, 0).getDate();
     let substractMonth = [];
     let substractDay = [];
-    let userMonthNumber = parseInt(userMonth);
-    let userDayNumber = parseInt(userDay);
 
     if (
       year < userYear ||
@@ -30,7 +29,7 @@ function App() {
       userDay > monthDays ||
       userDay < 1
     ) {
-        alert("error");
+        setError(true)
     } else if (yearCalc && monthCalc && daysCalc) {
       if(userMonth > month) {
         substractMonth.push(month, parseInt(userMonth));
@@ -38,34 +37,38 @@ function App() {
         return b - a;
       });
         setMonthCalc(12 - (substractMonth[0] - substractMonth[1]));
+
         setYearCalc((year - userYear) - 1) 
+        
         substractDay.push(actualDay, parseInt(userDay));
         substractDay.sort(function (a, b) {
         return b - a;
       });
       setDayCalc(substractDay[0] - substractDay[1]);
+      setError(false)
       }else {
-        setYearCalc(year - userYear);
 
+        setYearCalc(year - userYear);
         substractMonth.push(month, parseInt(userMonth));
         substractMonth.sort(function (a, b) {
         return b - a;
       });
         setMonthCalc(substractMonth[0] - substractMonth[1]);
+
         substractDay.push(actualDay, parseInt(userDay));
         substractDay.sort(function (a, b) {
         return b - a;
       });
       }
       setDayCalc(substractDay[0] - substractDay[1]);
-      
+      setError(false)
     }
   }
 
   return (
     <>
-      <div className="card border-2 space-x-10 bg-white">
-        <div className="inputText space-x-20 mt-8 flex flex-row ml-14">
+      <div className="card border-2 space-x-10 bg-white" >
+        <div className="inputText space-x-20 mt-8 flex flex-row ml-14" style={{ color: error ? "hsl(0, 100%, 67%)": "black" }}>
           <div>
             <b>DAY</b>
           </div>
@@ -79,24 +82,27 @@ function App() {
         <div className="inputContainer space-x-6 mt-2 flex flex-row h-10">
           <input
             className="day w-24 flex flex-row border-2"
+            style={{ borderColor: error ? "hsl(0, 100%, 67%)": "hsl(0, 0%, 86%)" }}
             placeholder=" DD"
             value={userDay}
             onChange={(e) => setUserDay(e.target.value)}
           ></input>
           <input
             className="month w-24 flex flex-row border-2"
+            style={{ borderColor: error ? "hsl(0, 100%, 67%)": "hsl(0, 0%, 86%)" }}
             placeholder=" MM "
             value={userMonth}
             onChange={(e) => setUserMonth(e.target.value)}
           ></input>
           <input
             className="year w-24 flex flex-row border-2"
+            style={{ borderColor: error ? "hsl(0, 100%, 67%)": "hsl(0, 0%, 86%)" }}
             placeholder=" YYYY"
             value={userYear}
             onChange={(e) => setUserYear(e.target.value)}
           ></input>
         </div>
-        <div className={`error flex space-x-4 text-red-500 ${error ? "hidden" : "visible"}}`}>
+        <div className="error flex space-x-4 text-red-500 " style={{ visibility: error ? "visible": "hidden" }}>
           <div>Must be a valid day</div>
           <div>Must be a valid month</div>
           <div>Must be a valid year</div>
