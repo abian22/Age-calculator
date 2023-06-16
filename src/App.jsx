@@ -18,9 +18,9 @@ function App() {
     let month = Math.round(today.getMonth() + 1);
     let actualDay = today.getDate();
     let monthDays = new Date(userYear, userMonth, 0).getDate();
+    let daysInPreviousMonth = new Date(userYear, userMonth - 1, 0).getDate();
     let substractMonth = [];
-    let substractDay = [];
-
+    
     if (
       year < userYear ||
       userYear < 1907 ||
@@ -36,35 +36,36 @@ function App() {
         substractMonth.sort(function (a, b) {
         return b - a;
       });
-        setMonthCalc(12 - (substractMonth[0] - substractMonth[1]));
+      let monthDiff = 12 - (substractMonth[0] - substractMonth[1]);
 
-        setYearCalc((year - userYear) - 1) 
-        
-        substractDay.push(actualDay, parseInt(userDay));
-        substractDay.sort(function (a, b) {
-        return b - a;
-      });
-      setDayCalc(substractDay[0] - substractDay[1]);
-      setError(false)
-      }else {
-
-        setYearCalc(year - userYear);
-        substractMonth.push(month, parseInt(userMonth));
-        substractMonth.sort(function (a, b) {
-        return b - a;
-      });
-        setMonthCalc(substractMonth[0] - substractMonth[1]);
-
-        substractDay.push(actualDay, parseInt(userDay));
-        substractDay.sort(function (a, b) {
-        return b - a;
-      });
+      let dayDiff = monthDays - userDay + actualDay;
+      if (dayDiff >= monthDays) {
+        dayDiff -= monthDays;
+        monthDiff++;
+      } else if (dayDiff < 0) {
+        dayDiff += daysInPreviousMonth;
+        monthDiff--;
       }
-      setDayCalc(substractDay[0] - substractDay[1]);
-      setError(false)
-    }
-  }
 
+      setYearCalc(year - userYear - 1);
+      setMonthCalc(monthDiff);
+      setDayCalc(dayDiff);
+      setError(false);
+    } else {
+      // Calcular la diferencia de meses y días si el mes de nacimiento es menor o igual al mes actual
+      setYearCalc(year - userYear);
+
+      substractMonth.push(month, parseInt(userMonth));
+      substractMonth.sort(function (a, b) {
+        return b - a;
+      });
+      setMonthCalc(substractMonth[0] - substractMonth[1]);
+
+      let dayDiff = actualDay - userDay;
+      setDayCalc(dayDiff);
+      setError(false);
+    }
+  }}
   return (
     <>
       <div className="card border-2 space-x-10 bg-white" >
