@@ -9,6 +9,7 @@ function App() {
   const [daysCalc, setDayCalc] = useState("- -");
   const [monthCalc, setMonthCalc] = useState("- -");
   const [yearCalc, setYearCalc] = useState("- -");
+  const [error, setError] = useState(false)
 
   function ageCalc() {
     let today = new Date();
@@ -18,6 +19,8 @@ function App() {
     let monthDays = new Date(userYear, userMonth, 0).getDate();
     let substractMonth = [];
     let substractDay = [];
+    let userMonthNumber = parseInt(userMonth);
+    let userDayNumber = parseInt(userDay);
 
     if (
       year < userYear ||
@@ -29,7 +32,21 @@ function App() {
     ) {
         alert("error");
     } else if (yearCalc && monthCalc && daysCalc) {
+      if(userMonth > month) {
+        substractMonth.push(month, parseInt(userMonth));
+        substractMonth.sort(function (a, b) {
+        return b - a;
+      });
+        setMonthCalc(12 - (substractMonth[0] - substractMonth[1]));
+        setYearCalc((year - userYear) - 1) 
+        substractDay.push(actualDay, parseInt(userDay));
+        substractDay.sort(function (a, b) {
+        return b - a;
+      });
+      setDayCalc(substractDay[0] - substractDay[1]);
+      }else {
         setYearCalc(year - userYear);
+
         substractMonth.push(month, parseInt(userMonth));
         substractMonth.sort(function (a, b) {
         return b - a;
@@ -39,7 +56,9 @@ function App() {
         substractDay.sort(function (a, b) {
         return b - a;
       });
+      }
       setDayCalc(substractDay[0] - substractDay[1]);
+      
     }
   }
 
@@ -76,6 +95,11 @@ function App() {
             value={userYear}
             onChange={(e) => setUserYear(e.target.value)}
           ></input>
+        </div>
+        <div className={`error flex space-x-4 text-red-500 ${error ? "hidden" : "visible"}}`}>
+          <div>Must be a valid day</div>
+          <div>Must be a valid month</div>
+          <div>Must be a valid year</div>
         </div>
         <div className="flex">
           <div className="border mt-10 w-96 h-0 flex" />

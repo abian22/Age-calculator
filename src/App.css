@@ -13,6 +13,11 @@
   src: url("./assets/fonts/Poppins-Bold.ttf");
 }
 
+@font-face {
+  font-family: "Italic";
+  src: url("./assets/fonts/Poppins-Italic.ttf");
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -92,4 +97,18 @@ background: none;
 
 .no-outline-button:focus {
   outline: none;
+}
+
+.error {
+  font-size: 10px;
+  font-family: "Italic";
+  visibility: hidden;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
 }
