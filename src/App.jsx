@@ -52,6 +52,8 @@ function App() {
       setDayCalc(dayDiff);
       setError(false);
     } else {
+      setYearCalc(year - userYear);
+
       substractMonth.push(month, parseInt(userMonth));
       substractMonth.sort(function (a, b) {
         return b - a;
@@ -63,10 +65,9 @@ function App() {
       setError(false);
     }
   }}
-
   return (
     <>
-      <div className="card border-2 space-x-10 bg-white  max-[375px]:w-max" >
+      <div className="card border-2 space-x-10 bg-white" >
         <div className="inputText space-x-20 mt-8 flex flex-row ml-14" style={{ color: error ? "hsl(0, 100%, 67%)": "black" }}>
           <div>
             <b>DAY</b>
@@ -109,7 +110,7 @@ function App() {
         <div className="flex">
           <div className="border mt-10 w-96 h-0 flex" />
           <button
-            className="  border-none outline-none no-outline-button"
+            className="bg-white border rounded-full border-none outline-none no-outline-button"
             onClick={() => ageCalc()}
           >
             <img
